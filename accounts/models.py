@@ -13,7 +13,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE, primary_key = True, related_name='student')
     phone_number = models.CharField(max_length=20)
     location = models.CharField(max_length=20)
-    designation = models.CharField(max_length=20)
+    designation = models.CharField(max_length=20, default='Student')
     contact_facebook = models.URLField(null=True, blank=True)
     contact_linkedin = models.URLField(null=True, blank=True)
     image = models.ImageField(default="default/default_profile.png",upload_to='images/', blank=True)

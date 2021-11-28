@@ -8,7 +8,6 @@ class StudentSignUpForm(UserCreationForm):
     last_name = forms.CharField(required=True)
     phone_number = forms.CharField(required=True)
     location = forms.CharField(required=True)
-    designation = forms.CharField(required=True)
     email = forms.EmailField(required=True)
 
     class Meta(UserCreationForm.Meta):
@@ -25,7 +24,6 @@ class StudentSignUpForm(UserCreationForm):
         student = Student.objects.create(user=user)
         student.phone_number=self.cleaned_data.get('phone_number')
         student.location=self.cleaned_data.get('location')
-        student.designation=self.cleaned_data.get('designation')
         student.save()
         return user
 
