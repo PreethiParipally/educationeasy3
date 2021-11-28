@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% load static %}
+
+{% block title %} Clashing Schedule. {% endblock %}
+
+{% block content %}
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    .card{
+        width: 30%;
+        /* display: inline-block; */
+        box-shadow: 2px 2px 20px black;
+        border-radius: 5px; 
+        margin: 2%;
+        background-color: gainsboro;
+        /* border-right: 3px dotted;
+        margin-right: 50px; */
+    }
+
+    .image
+    {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        width: 100%;
+    }
+</style>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'schedular:schedules' course_id  %}">Schedule</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Clash Schedule</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+
+<div style="color: red;">
+  <h2 style="padding: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Your clashes with this schedule. Delete the following schedules or Edit timings of these below listing schedule or choose different timings to add this schedule!
+  </h2>
+  <p style="font-size: 20px;">This is the Clashing Schedule</p>
+</div>
+  <div class="container">
+    <div class="row"></div>
+      {% for schedule in schedules %}
+          <div class="card col-12 col-sm-6 col-md-4">
+
+            <div >
+              <h3 style="padding: 10px; text-align:center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Course: {{schedule.course.course_name}}</h3>
+            </div>
+          <hr>
+  
+            <div class="des">
+              <div style="margin-left: 30px; margin-bottom:10px" >
+                <p> <b> Date : </b> {{ schedule.date }} </p>
+                <p> <b>Start Time : </b> {{ schedule.start_time }} </p>
+                <p> <b>End Time : </b> {{ schedule.end_time }} </p>
+                <p> <b>Total Number of Seats : </b> {{ schedule.seats }} </p>
+                <p> <b>Booked Seats : </b> {{ schedule.bookings.count }} </p>
+                <p> <b>Required Vaccination Level : </b> {{ schedule.vaccine_dose }} </p>
+                <a class="btn btn-info" href="{% url 'schedular:bookings' id1=schedule.course_id id2=schedule.id %}"><span class="glyphicon glyphicon-eye-open"></span>  Bookings</a>
+                <a class="btn btn-warning" href="{% url 'schedular:update_schedule' id=schedule.course_id pk=schedule.pk %}"><span class="glyphicon glyphicon-edit"></span></a>
+                <a class="btn btn-warning" href="{% url 'schedular:delete_schedule' id=schedule.course_id pk=schedule.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+                <br>
+              </div>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+  </div>                
+
+
+{% endblock %}

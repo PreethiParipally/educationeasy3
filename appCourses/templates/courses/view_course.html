@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load define_action %}
+{% load static %}
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+        <br>
+        <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+        
+        {% if request.user.is_authenticated %} 
+                {% if request.user.is_faculty %}
+                        <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+                {% else %}
+                        <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+                {% endif %}
+        {% endif %}
+        <br><br> 
+        <div class="container" style="text-align: center;">
+        <div class="col-12 col-sm-6 col-md-10">
+             <h3 style="text-align: center;"><strong>{{ course.course_name }}  </strong></h3>
+              <br/>
+            <img  style=" height: 300px; width: 300px  " src="{{ course.course_image.url }}" alt="">
+                         <hr/>
+                  <h4> <strong>Faculty :</strong> {{ course.user }} </h4>
+                           <br/>
+                  <p> <h4>About Faculty </h4>{{ course.faculty_details }} </p>
+                          <br/>
+                  <p> <h4>About Course </h4>{{ course.course_description }} </p>
+                          <br/>
+        
+                  <p>  <h4>Course Duration </h4>{{ course.start_date }} - {{ course.end_date }} </p><br>
+                  {% if request.user.is_authenticated and request.user.is_faculty and request.user == course.user %}
+                        <a class="btn btn-warning" href="{% url 'courses:update' course.pk %}">Update Course</a>
+                        <a class="btn btn-warning" href="{% url 'courses:delete' course.pk %}">Delete Course</a><br><br>
+                        <a class="btn btn-info" href="{% url 'courses:resources' course.id %}">Resources </a>
+                        <a class="btn btn-primary" href="{% url 'courses:assignments' course.id %}">Assignments </a>
+                        <a class="btn btn-primary" href="{% url 'exams:exams' course.id %}">Exams </a>
+                        <a class="btn btn-primary" href="{% url 'schedular:schedules' course.id %}">Schedules </a>
+                        <a class="btn btn-primary" href="{% url 'discussions:discussions' course.id %}">View Discussions </a>
+                                        <br/> 
+                  {% elif request.user.is_authenticated and request.user.is_student %}
+                        {% if is_registered %}
+                                <h4 style="color:blue ;"><b>You have already Registered to this course!</b></h4>
+                                <a class="btn btn-info" href="{% url 'courses:resources' course.id %}">Resources </a>
+                                <a class="btn btn-primary" href="{% url 'courses:assignments' course.id %}">Assignments </a>
+                                <a class="btn btn-primary" href="{% url 'exams:exams_student' course.id %}">Exams </a>
+                                <a class="btn btn-primary" href="{% url 'schedular:schedules' course.id %}">Schedules </a>
+                                <a class="btn btn-primary" href="{% url 'discussions:discussions' course.id %}">View Discussions </a>
+                        {% else %}
+                                <a class="btn btn-primary" href="{% url 'courses:register_course' course.id %}">Register </a>
+                        {% endif %}
+                  {% endif %}
+                  
+         </div>
+    </div>
+{% endblock %}

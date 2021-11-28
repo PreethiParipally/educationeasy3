@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Teacher-Student &amp;  HTML Template">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  <title>Education Easy {% block title %} {% endblock %}</title>
+
+  <!-- Favicon -->
+  
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+
+  
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    {% block styles %} {% endblock %}
+
+</head>
+
+<body>
+   {% include 'nav.html' %}
+   <br><br>
+
+    <div class="container mycontent">
+      {% block content %}
+
+      {% endblock %}
+      <br>
+    <br>
+    <br>
+    </div>
+
+   <footer class="footer-area" style="background-color: #77ACF1;">
+    <div class="container">
+      <div class="row">
+        <!-- Single Footer Widget -->
+        <div class="col-12 col-sm-6 col-lg-6">
+          <div class="single-footer-widget">
+            <a href="/" class="d-block mb-4"><img style="height: 200px; border-radius:100px;" src="{% static 'logo4.gif' %}" alt=""></a>
+
+            <div class="footer-contact">
+                 <p> We Believe Everyone Should Have Easy Access To Online</p>
+              <p> Email Us  : EducationEasy@gmail.com</p>
+              <p> Mobile No :  9677838789</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Single Footer Widget -->
+        <div class="col-12 col-sm-6 col-lg">
+          <div class="single-footer-widget">
+            <!-- Widget Title -->
+            <h5 class="widget-title">Newsletter</h5>
+
+            <p>We will send out weekly news and great Education Information.</p>
+            <!-- Newsletter Form -->
+            <div class="footer-newsletter-form">
+              <form action="#" method="post">
+                <input type="email" name="nl-email" value="" placeholder="Email Address">
+                <button type="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+              </form>
+            </div>
+
+            <!-- Social Info -->
+            <div class="footer-social-info">
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Google Plus"><i class="fa fa-google-plus"></i></a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a>
+              <a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copywrite Area -->
+    <div class="" style="background-color: #04009A;">
+      <div class="row">
+        <div class="col-12">
+          <div class="copywrite-content">
+            <p> Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Education Easy </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- ***** Footer Area End ***** -->
+
+  
+
+  <!-- ******* All JS ******* -->
+  <!-- jQuery js -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Popper js -->
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap js -->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- All js -->
+  <script src="{% static 'js/dento.bundle.js' %}"></script>
+  <!-- Active js -->
+  <script src="{% static 'js/default-assets/active.js' %}"></script>
+
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+   {% block javascripts %} {% endblock %}
+</body>
+
+</html>

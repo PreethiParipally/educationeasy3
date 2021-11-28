@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Assignments{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Assignments</li>
+    </ol>
+  </nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+{% endif %}
+<br><br> 
+
+{% if request.user.is_authenticated %}
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h6 class="panel-title">Assignments</h6>
+            </div>
+            <table class="table table-hover table-bordered" id="dev-table">
+            <thead>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Marks</th>
+                <th>Action</th>
+            </thead>
+                    {% for assignment in assignments %}
+                        <tr>
+                            <td>{{ assignment.title }}</td>
+                            <td> {{ assignment.content }} </td>
+                            <td> {{ assignment.marks }} </td>
+                            {% if request.user.is_faculty %}
+                                <td>
+                                    <a class="btn btn-info" href="{% url 'courses:assignment_submissions' id1=assignment.course_id id2=assignment.id %}"><span class="glyphicon glyphicon-eye-open"></span> Submitted Assignments</a>
+                                    <a class="btn btn-primary" href="{% url 'courses:update_assignment' id=assignment.course_id pk=assignment.pk %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a class="btn btn-primary" href="{% url 'courses:delete_assignment' id=assignment.course_id pk=assignment.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+                                </td>
+                            {% else %}
+                                <td>
+                                    <a class="btn btn-info"  href="{% url 'courses:view_assignment' id=assignment.course_id pk=assignment.pk  %}"><span class="glyphicon glyphicon-eye-open"></span>Assignment</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <br><br><br>
+                        <h4 style="color: red; text-align:center;">No Assignments have been added!!</h4>
+                        <br><br><br>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        {% if request.user.is_faculty %}
+            <a class="btn btn-primary" href="{% url 'courses:add_assignment' course_id %}"><span class="glyphicon glyphicon-plus"></span> Add Assignment</a>
+        {% endif %}
+{% else %}
+    <h4 style="color:#4682B4">Please Login to Education Easy </h4>
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login</a>    
+{% endif %}
+
+{% endblock %}
+

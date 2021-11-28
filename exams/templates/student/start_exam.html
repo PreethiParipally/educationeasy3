@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Start Exam{% endblock %}
+
+
+{% block content %}
+
+<br><br>
+<script type="text/javascript">
+  function preventBack() {
+      window.history.forward();
+  }
+   
+  setTimeout("preventBack()", 0);
+   
+  window.onunload = function () { null };
+</script>
+
+
+<div class="jumbotron my-4">
+  <div align="right " id="displaytimer"><b>Timer: 0 seconds</b></div>
+
+  <form class="form" autocomplete="off" onsubmit="return saveAns()"  action="{% url 'exams:calculate_marks' course.id %}" method="POST">
+    {% csrf_token %}
+    <h2 style="text-align: center;">Course: {{course.course_name}}</h2>
+    <h2 style="text-align: center;">Exam: {{exam.exam_name}}</h2>
+    {% for q in questions%}
+    <h3 class="text-danger">{{ forloop.counter }}. {{q.question}}</h3><h4 style="text-align: right;">[{{q.marks}} Marks]</h4>
+    
+        <input type="hidden" name="csrfmiddlewaretoken" value="C24rUotmdHawVQJL3KrqiWxvti8UffOFYUc8TRbZtLt36AVLdP3jbkzUVe3beRAa">
+        
+        
+          <div class="form-check mx-4">
+            <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option1}}" value="Option1">
+            <label class="form-check-label" for="option1" style="margin-left: 40px;">
+              {{q.option1}}
+            </label>
+          </div>
+
+        
+          <div class="form-check mx-4">
+            <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option2}}" value="Option2">
+            <label class="form-check-label" for="option2" style="margin-left: 40px;">
+              {{q.option2}}
+            </label>
+          </div>
+
+        
+          <div class="form-check mx-4">
+            <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option3}}" value="Option3">
+            <label class="form-check-label" for="option3" style="margin-left: 40px;">
+              {{q.option3}}
+            </label>
+          </div>
+
+        
+          <div class="form-check mx-4">
+            <input class="form-check-input" type="radio" name="{{ forloop.counter }}" id="{{q.option4}}" value="Option4">
+            <label class="form-check-label" for="option4" style="margin-left: 40px;">
+              {{q.option4}}
+            </label>
+          </div>
+        {% empty %}
+        <br><br><br>
+        <h4 class="bg-light text-center font-italic" style="color: red;">No Questions have been added to this Exam. Come back again!!</h4>
+        <br><br><br>
+        {% endfor %}
+        <br>
+        <input id='timer' type='hidden' name="timer" value="">
+        <br>
+        <input class="btn btn-success btn-lg" style="border-radius: 5%;"  type="submit" value="Submit Answers">  
+    </form>
+  </div>
+
+<script>
+
+    console.log('hello world')
+    const timer=document.getElementById('displaytimer')
+    console.log(timer.textContent)
+    const inputtag = document.getElementById('timer')
+
+    t=0
+    setInterval(()=>{
+        t+=1
+        timer.innerHTML ="<b>Timer: " +t+" seconds</b>"
+        inputtag.value = t
+    },1000)
+
+    function saveAns(){  
+
+        var ele = document.getElementsByTagName('input'); 
+        for(i = 0; i < ele.length; i++) { 
+            if(ele[i].type="radio") { 
+                if(ele[i].checked){        
+                  setCookie(ele[i].name,ele[i].value,3)
+                }
+            } 
+        } 
+        setCookie('timer',document.getElementById('timer').value,3)     
+    }
+    
+    function setCookie(cname, cvalue, exdays) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exdays*24*60*60*1000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+</script> 
+
+<br><br><br><br><br><br>
+{% endblock content %}

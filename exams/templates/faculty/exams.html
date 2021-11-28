@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}Assignments{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Exams</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+
+<br><br>
+<a  class="btn btn-outline-secondary" href="{% url 'exams:add_exam' course_id %}"><span class="glyphicon glyphicon-plus"></span> Add Exam</a>
+<br><br>
+<div class="container">
+
+  {% if count %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h6 class="panel-title">Available Exams</h6>
+      </div>
+      
+      <table class="table table-hover table-bordered" id="dev-table">
+        <thead>
+          <tr>
+
+            <th>Exam</th>
+            <th>Total Questions</th>
+            <th>Total Marks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for t in exams %}
+        <tr>
+
+          <td> <a href="{% url 'exams:view_exam' t.course.id t.id %}">{{t.exam_name}}</a></td>
+          <td>{{t.questions.count}}</td>
+          <td>{{t.questions.all|sum_total_marks}}</td>
+          
+          <td>
+            <a class="btn btn-info btn-xs" style="border-radius: 0%; margin-right:15px;" href="{% url 'exams:view_results' id1=t.course.id id2=t.id %}"><span class="glyphicon glyphicon-eye-open"></span> Results</a>
+            <a class="btn btn-danger btn-xs" style="border-radius: 0%; margin-right:15px;" href="{% url 'exams:delete_exam' id=t.course.id pk=t.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+            <a href="{% url 'exams:update_exam' id=t.course.id pk=t.pk %}">Update</a>
+          </td>
+        </tr>
+        {% empty %}
+          <h4 class="bg-light text-center font-italic" style="color: red;">No Exams have been added!!</h4>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <h4 class="bg-light text-center font-italic" style="color: red;">No Exams have been added!!</h4>
+  {% endif %}
+</div>
+
+<br><br><br><br><br><br>
+{% endblock content %}

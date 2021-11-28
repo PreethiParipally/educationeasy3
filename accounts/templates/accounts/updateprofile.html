@@ -1,0 +1,78 @@
+
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<div class="row">
+ <div class="col-md-2">
+    {% if user.is_faculty %}
+      <div class="content-section">
+        <div class="media" style="text-align:center">
+          <figure>
+            {% if user.faculty.image %}
+            <img class="rounded-circle account-img" style="width: 150px;height: 150px;" src="{{ user.faculty.image.url }}" >
+            {% else %}
+            <img class="rounded-circle account-img" style="width: 150px;height: 150px;" src="{% static 'accounts/img/default_profile.png' %}">
+            {% endif %}
+            <div class="media-body">
+              <figcaption><h2 class="account-heading">{{ user.username }}</h2></figcaption>
+              <figcaption><p class="text-secondary">@ {{ user.first_name }} {{user.last_name}}</p></figcaption>
+            </figure>
+          </div>
+          <br>
+        <ul class="list-group">
+          <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> {{no_likes}}</li>
+          <li class="list-group-item text-right"><span class="pull-left"><strong>Posts</strong></span> {{total_posts}}</li>
+        </ul>
+      </div>
+    </div>
+    {% else %}
+      <div class="content-section">
+        <div class="media">
+          <figure>
+            {% if user.student.image %}
+            <img class="rounded-circle account-img" style="width: 150px;height: 150px;" src="{{ user.student.image.url }}" >
+            {% else %}
+            <img class="rounded-circle account-img" style="width: 150px;height: 150px;" src="{% static 'accounts/img/default_profile.png' %}">
+            {% endif %}
+            <div class="media-body">
+              <figcaption><h2 class="account-heading">{{ user.username }}</h2></figcaption>
+              <figcaption><p class="text-secondary">{{ user.first_name }} {{user.last_name}}</p></figcaption>
+            </div>
+          </figure>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+      <div class="col-md-10">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Info</legend>
+                <div class="col-md-5">
+                  {{ u_form|crispy }}
+                </div>
+                <div class="col-md-5">
+                  {{ p_form|crispy }}
+                </div>
+            </fieldset>
+              <div class="form-group">
+                <button class=" btn btn-primary" type="submit">Update</button>
+              </div>
+        </form>
+      </div>
+  </div>
+</div>
+{% endblock content %}

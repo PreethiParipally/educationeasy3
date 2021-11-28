@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %} Update Assignment Submission{% endblock %}
+
+{% block content %}
+
+    <section class="dentist-area section-padding-40-0">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'courses:assignments' course_id  %}">Assignments</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'courses:view_assignment' id=course_id pk=assignment_id %}">View Assignment</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update Assignment Submission</li>
+            </ol>
+          </nav>
+        
+        <br>
+        <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+        
+        {% if request.user.is_authenticated %} 
+                {% if request.user.is_faculty %}
+                        <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+                {% else %}
+                        <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+                {% endif %}
+        {% endif %}
+        <br><br> 
+<div class="container">
+
+<div class="row justify-content-center">
+
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <center> <h3>Update Assignment Submission</h3></center>
+
+                    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+                        {{ form|bootstrap }}
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Update" class="btn btn-primary btn-md text-white">
+                                <br><br>
+                                <a href="{% url 'courses:delete_assignment_submission' id1=assignment_submission.course_id id2=assignment_submission.id pk=assignment_submission.pk %}">Delete Assignment Submission</a>
+
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

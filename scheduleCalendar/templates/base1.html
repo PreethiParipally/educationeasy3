@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Teacher-Student &amp;  HTML Template">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Title -->
+  <title>Education Easy {% block title %} {% endblock %}</title>
+
+  <!-- Favicon -->
+  
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+  
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
+
+</head>
+
+<body onload="today();">
+   {% include 'nav.html' %}
+   <br><br>
+
+    <div class="container mycontent">
+      {% block content %}
+
+      {% endblock %}
+      <br>
+    <br>
+    <br>
+    </div>
+
+  <!-- ******* All JS ******* -->
+  <!-- jQuery js -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <!-- Popper js -->
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap js -->
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- All js -->
+  <script src="{% static 'js/dento.bundle.js' %}"></script>
+  <!-- Active js -->
+  <script src="{% static 'js/default-assets/active.js' %}"></script>
+
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+   {% block javascripts %} {% endblock %}
+</body>
+
+</html>
+
+<script>
+	time = setInterval(now, 1000)
+	function now(){
+		el = document.getElementById('date-time')
+		d = new Date()
+		el.innerHTML = d.toLocaleString()
+	}
+	
+	function today(){
+		var date = new Date()
+		var server_year = {{ year }}
+		var server_month = {{ month }}
+		var server_day = {{ day }}
+		var todays = document.getElementById(server_year+'-'+server_month+'-'+server_day)
+		todays.style.background = '#eee'
+		todays.title = 'Today'
+	}	
+		el_jal = document.getElementById('jal-month').innerHTML
+		el_hij = document.getElementById('hij-month').innerHTML
+		m = document.getElementsByClassName('month')
+		for(var i=0;i<m.length;i++){
+			if(m[i] !== undefined){
+				m = m[i]
+			}
+		}
+		m.innerHTML += el_jal + el_hij
+	today() 
+</script>
+</html>

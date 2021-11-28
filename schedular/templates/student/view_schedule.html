@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Schedules{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course.id %}">Course</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'schedular:schedules' course.id  %}">Schedule</a></li>
+          <li class="breadcrumb-item active" aria-current="page">View Schedule</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+
+{% if request.user.is_authenticated and request.user.is_student%}
+    <div class="container">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h6 class="panel-title">Schedule</h6>
+        </div>
+        <table class="table table-hover table-bordered" id="dev-table">
+              <tr><td> Date</td><td> {{ schedule.date }} </td></tr>
+              <tr><td>Start Time</td><td> {{ schedule.start_time }} </td></tr>
+              <tr><td>End Time</td><td> {{ schedule.end_time }} </td></tr>
+              <tr><td>Total Number of Seats</td><td> {{ schedule.seats }} </td></tr>
+              <tr><td>Booked Seats</td><td> {{ schedule.bookings.count }} </td></tr>
+              <tr><td>Required Vaccination Level</td><td> {{ schedule.vaccine_dose }} </td></tr>
+                {% if seat %}
+                  <tr><td>Booked Seat Number</td><td> {{ seat.seat }} </td></tr>
+                  </table>
+                </div>
+              </div><br><br>
+                  <a class="btn btn-danger"  href="{% url 'schedular:cancel_booking' id1=schedule.course.id id2=schedule.id pk=seat.pk  %}">Cancel Booking</a>
+                {% else %}
+                </table>
+              </div>
+            </div><br><br>
+                  <a class="btn btn-primary" href="{% url 'schedular:select_seat' id1=schedule.course.id id2=schedule.id %}">Book a slot now.</a>
+                {% endif %}
+{% else %}
+  <h4 style="color:#4682B4">Please Login as Student to Education Easy </h4>
+  <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login as Student</a>    
+{% endif %}
+
+{% endblock %}
+

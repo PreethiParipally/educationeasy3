@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} Query Detail{% endblock title %}
+{% load humanize %}
+{% load extras %}
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<div class="card" style="padding: 10px 20px;margin-bottom: 20px;box-shadow: 0 0 5px rgba(0,0,0,0.5);">
+  <table class="table mb-0">
+      <div style="padding-bottom: 1px;margin-bottom: 15px;border-bottom: 1px solid #e3e3e3">
+        <p><a href=" {% url 'accounts:profile' query.course.user %} " style="color:#007bff;font-size:19px">{{query.user}}</a> <span class="text-muted" style="float:right;font-size:15px">{{query.created_at }}</span></p>
+      </div>
+      <h3 style="color: #444444;" class="align-middle">{{ query.title }}
+        {% if user.is_authenticated and user == query.user %}
+        <a href="{% url 'discussions:update' id=query.course.id pk=query.pk %}" class="btn btn-lg" style="margin-top:8px;float:right"><span class="glyphicon glyphicon-pencil"></span> </a>
+
+        {% endif %}
+      </h3>
+      <p>{{query.question|safe}}</p>
+
+  </table>
+</div>
+<div class="container">
+    <h2> Answers ({{answers.count}}) </h2>
+    <div class="my-2">
+        {% if user.is_authenticated %}
+        <form action="{% url 'discussions:queryAnswer' id=query.course.id pk=query.pk  %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleInputEmail1">Query Answer </label>
+                <input type="text" class="form-control" name="answer" placeholder="Enter answer here">
+            </div>
+            <input type="hidden" name="parentSno" value="">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        {% else %}
+        Please login to post an Answer!!
+        {% endif %}
+    </div>
+    {% for answer in answers %}
+    <div class="row my-3">
+        <div class="col-md-1  ">
+            <img class="rounded mx-auto d-block border border-dark" style="width: 40px; height:auto;" src="/static/img/user.png" alt="user">
+        </div>
+        <div class="col-md-11 ">
+            <b> {{answer.user.username}} </b> <span class="badge badge-secondary ">{{answer.timestamp  | naturaltime }}</span>
+            <div>{{answer.answer}}</div>
+            <div class="reply mx-0">
+                {% if user.is_authenticated %}
+                <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#replyBox{{answer.sno}}" aria-expanded="false" aria-controls="replyBox{{answer.sno}}">
+                    Reply
+                </button>
+                <div class="collapse" id="replyBox{{answer.sno}}">
+                    <div class="card card-body my-2">
+                        <form action="{% url 'discussions:queryAnswer' id=answer.course.id pk=answer.pk  %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="answer"> reply </label>
+                                <input type="text" class="form-control" name="answer" placeholder="Enter answer here">
+                                <input type="hidden" name="parentSno" value="{{answer.sno}}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#replyBox{{answer.sno}}" aria-expanded="false" aria-controls="replyBox{{answer.sno}}">
+                    Login to reply
+                </button>
+                {% endif %}
+                <div class="replies my-2 ">
+                    {% for reply in replyDict|get_val:answer.sno %}
+                    <div class="row my-2">
+                        <div class="col-md-1 ">
+                            <img class="rounded mx-auto d-block my-2 border border-dark"  style="width: 30px; height:auto;" src="/static/img/user.png" alt="user">
+                        </div>
+                        <div class="col-md-11">
+                            <div class="col-md-11 ">
+                                <b> {{reply.user.username}} </b> <span class="badge badge-secondary ">{{reply.timestamp | naturaltime }}</span>
+                                <div>{{reply.answer}}</div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

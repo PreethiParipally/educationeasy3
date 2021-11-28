@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Result{% endblock %}
+
+
+{% block content %}
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course.id %}">Course</a></li>
+          <li class="breadcrumb-item active" aria-current="page">View Exam Results</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+<div class="container">
+  {% if count %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h6 class="panel-title">View Marks</h6>
+      </div>
+      <table class="table table-hover table-bordered" id="dev-table">
+        <thead>
+          <tr>
+
+            <th>Exam Name</th>
+            
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for t in exams %}
+        <tr>
+
+          <td> {{t.exam_name}}</td>
+          
+          <td><a class="btn btn-success btn-sm" style="border-radius: 0%;" href="{% url 'exams:check_marks' id=t.course.id pk=t.pk  %}"><span class="glyphicon glyphicon-eye-open"></span> View Marks</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <h4 class="bg-light text-center font-italic" style="color: red; text-align:center;">You haven't attempted any exam in this course!!</h4>
+  {% endif %}
+</div>
+
+<br><br><br><br><br><br>
+{% endblock content %}

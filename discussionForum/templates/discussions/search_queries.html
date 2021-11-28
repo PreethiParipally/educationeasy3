@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<div class="card">
+  <div class="card-header">
+    {% if searched %}
+		  You Searched For {{ searched }}
+	  {% else %}
+		  Search queries...
+	  {% endif %}
+  </div>
+  <div class="card-body">
+    <form method=POST action="{% url 'discussions:search_queries' course_id %}">
+      {% csrf_token %}
+      <input class="form-control me-2" type="search" placeholder="Search Queries" aria-label="Search" name="searched">
+      <br/>
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+<br/>
+{% for query in queries %}
+    <div class="card" style="padding: 10px 20px;margin-bottom: 30px;box-shadow: 0 0 5px rgba(0,0,0,0.5);">
+      <table class="table mb-0">
+          <div style="padding-bottom: 1px;margin-bottom: 15px;border-bottom: 1px solid #e3e3e3">
+            <p><a href=" {% url 'accounts:profile' query.user.username %} " style="color:#007bff;font-size:19px">{{query.user}}</a> <span class="text-muted" style="float:right;font-size:15px">{{query.created_at }}</span></p>
+          </div>
+          <h3 style="color: #444444;" class="align-middle"><a href="{% url 'discussions:query-detail'  id=query.course.id pk=query.pk %}">{{ query.title }}</a></h3>
+          <div class="text">
+            <p>{{query.question|safe|truncatewords:120}} {% if query.question|wordcount > 120 %}<a href="{% url 'discussions:query-detail'  id=query.course.id pk=query.pk %}">read more</a>{% endif %}</p>
+
+          </div>
+        </table>
+      </div>
+ {% empty %}
+      {% if searched %}
+          <h4 class="bg-light text-center font-italic" style="color: red;" colspan="5">No Match Found!!</h4>
+      {% endif %}
+{% endfor %}
+      
+<div class="pagination" style="display: block;">
+  <span class="step-links">
+      {% if page_obj.has_previous %}
+      <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+  </span>
+</div>	
+{% endblock %}

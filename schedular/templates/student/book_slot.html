@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% load static %}
+
+{% block title %} Book a Slot. {% endblock %}
+
+{% block content %}
+
+<style>
+    table,tr{
+        width:100%;
+        height:100%;
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    function preventBack() {
+        window.history.forward();
+    }
+     
+    setTimeout("preventBack()", 0);
+     
+    window.onunload = function () { null };
+  </script>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Book Slot</li>
+    </ol>
+  </nav>
+  
+  <br>
+  <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+  
+  {% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+  {% endif %}
+  <br><br>
+
+<div class="container">
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+        <h4 style="text-align: center; font-size:50px;">Screen side</h4>
+        <br><br>
+        <p style="text-align: center;">You can select only one seat!!</p>
+        <div class="jumbotron">
+            <p style="text-align:center;">Click on the <b>Get Seating Arrangement</b> button to view the seating arrangement and book a seat.</p>
+            <p>You can choose any one of the seats in red to book a seat. Black seats indicate that they were already booked by someone.</p>
+            <p>Blue seat indicate the seat that you have selected to book.</p>
+            <input type="button" onclick="createTable()" value="Get Seating Arrangement">
+            <br><br>
+            <table id="myTable" border="0">
+            </table>
+        </div>
+        <input id='rows' type='hidden' name="rows" value="{{cols}}">
+        <input id='columns' type='hidden' name="columns" value="{{rows}}">
+        <input id='rem_columns' type='hidden' name="rem_columns" value="{{rem_seats}}">
+        <br>
+        <label for="form-control" style="font-weight: bold;">Seat Number:</label>
+            <input type="number" readonly="readonly"  class="form-control" id="demo" name="booked_seat" style="width: 30%;">
+        <br>
+
+        <div class="container">
+            <!-- <button class="btn btn-danger" onclick="location.reload()" style="width: 70%; position: absolute;">Clear Booked seats</button>
+            <br> -->
+            <br>
+            <input type="submit" class="btn btn-success" style="width: 70%; position: absolute;" value="Confirm Booking">
+        </form>
+            <br>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<script>
+    var a=[];
+    function createTable()
+    {
+        var rn=document.getElementById('rows').value;
+        var cn=document.getElementById('columns').value;
+        var rem_cols=document.getElementById('rem_columns').value;
+        var seats = {{ seats| safe }}
+        var per=100/cn;
+      
+        for(var r=0;r<parseInt(rn,10);r++)
+        {
+            var x=document.getElementById('myTable').insertRow(r);
+            for(var c=0;c<parseInt(cn,10);c++)  
+            {
+                seatn=r*cn+c;
+                seat=seatn.toString();
+                console.log(seat);
+                var y=  x.insertCell(c);
+                console.log(seat+" "+seats[seat]);
+                if(seats[seat]=="0")
+                    y.innerHTML="<input type= 'image' "+ "onclick=bookSeat("+seat+") id="
+                    +seat+" value="+seat+" src='{% static 'seat.png' %}' style='width:"+per+"%; height:auto;'/> <p>"+ seat +"</p>";
+            
+                else{
+
+                    y.innerHTML="<input type= 'image' "+ "onclick=bookSeat("+seat+") disabled = true id="
+                    +seat+" value="+seat+" src='{% static 'bk.jpg' %}' style='width:"+per+"%; height:auto;'/> <p>"+ seat +"</p>";
+                
+                    a[a.length]=seat;
+                    console.log(a);
+                }
+                    }
+        }
+        var x=document.getElementById('myTable').insertRow(r);
+        for(var c=0;c<parseInt(rem_cols,10);c++)  
+        {
+            seatn=rn*cn+c;
+            seat=seatn.toString();
+            console.log(seat);
+            var y=  x.insertCell(c);
+            if(seats[seat]=="1"){
+                y.innerHTML="<input type= 'image' "+ "onclick=bookSeat("+seat+") disabled = true id="
+                +seat+" value="+seat+" src='{% static 'bk.jpg' %}'  style='width:"+per+"%; height:auto%;'/> <p >"+ seat +"</p>";
+                a[a.length]=seat;
+                console.log(a);
+            }
+            else
+                y.innerHTML="<input type= 'image' "+ "onclick=bookSeat("+seat+") id="
+                +seat+" value="+seat+" src='{% static 'seat.png' %}' style='width:"+per+"%; height:auto%;'/> <p >"+ seat +"</p>";
+        }
+    }
+    
+    function bookSeat(id)
+    {
+            
+            var rn=document.getElementById('rows').value;
+            var cn=document.getElementById('columns').value;
+            var rem_cols=document.getElementById('rem_columns').value;
+            document.getElementById('demo').value = document.getElementById(id).value;   
+            document.getElementById(id).src = "{% static 'booked1.png' %}";
+            document.getElementById(id).disabled = true;
+            for(var i=0;i<parseInt(cn*rn+rem_cols,10);i++){ 
+                var flag=0;
+                console.log(a);
+                for(var j=0;j<parseInt(a.length,10);j++){
+                    
+                    if(i==a[j]){
+                        flag=1;
+                        break;
+                    }
+                }
+                if(i!=id && flag==0){
+                    console.log(i.toString());
+                    document.getElementById(i.toString()).src = "{% static 'seat.png' %}";
+                    document.getElementById(i).disabled = false;
+                } 
+            }
+            
+    }
+    
+</script>
+{% endblock %}

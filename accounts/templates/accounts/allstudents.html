@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<div class="col-md-9">
+  <h4><a href="{% url 'accounts:search_student' %}" class="btn btn-outline-secondary">Search for Student</a></h4>
+  <div class="card">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th><h4 style="font-weight:bold; text-align: center;">Student</h4></th>
+          <th><h4 style="font-weight:bold; text-align: center;">Number of Courses Registered</h4></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          {% if user.is_student %}
+            <tr>
+              {% if user.student.image %}
+              <td class="align-middle"><img class="rounded-circle account-img" style="width: 65px;height: 65px; text-align: center;"  src="{{ user.student.image.url }}" ><a href=" {% url 'accounts:profile' user.username %} " style="color:#007bff;font-size:19px;margin-left:20px;">: {{ user.username }}</a></td>
+              {% else %}
+              <td class="align-middle"><img class="rounded-circle account-img" style="width: 65px;height: 65px; text-align: center;"  src="{% static 'accounts/img/default_profile.png' %}" ><a href=" {% url 'accounts:profile' user.username %} " style="color:#007bff;font-size:19px;margin-left:20px;">: {{ user.username }}</a></td>
+              {% endif %}
+              <td class="align-middle" style="text-align: center;">{{user.userregister.count}}</td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <br><br>
+</div>
+<br><br>
+
+{% endblock content %}

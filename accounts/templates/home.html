@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <h2 style="color:#4682B4;font-weight:bold; text-align:center;">Welcome to Education Easy!</h2>
+    <hr style=" border-width: 2px;">
+    <br>
+    <img src="{% static 'logo4.gif' %}" style="float:left;width:27%;margin-right:35px;border-radius:10%">
+    <p style="font-weight:bold;font-size:15.4px;font-family:Georgia, serif">
+        To say that education is your doorway to success would be an understatement. It serves as the key which will unlock numerous doors that will lead to success. This will, in turn, help you build a better life for yourself.
+    </p>
+    <p style="font-weight:bold;font-size:15.4px;font-family:Georgia, serif">
+        An educated person has a lot of job opportunities waiting for them on the other side of the door. They can choose from a variety of options and not be obligated to do something they dislike. Most importantly, education impacts our perception positively. It helps us choose the right path and look at things from various viewpoints rather than just one.
+    </p>
+    <br>
+    {% if not user.is_authenticated %}
+        <h4 style="color:#4682B4">Please Login to Education Easy </h4>
+        <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login</a>
+    {% else %}
+        <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+        {% if request.user.is_authenticated %} 
+            {% if request.user.is_faculty %}
+                    <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+            {% else %}
+                    <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+            {% endif %}
+        {% endif %}
+        <br><br> 
+    {% endif %}
+    
+{% endblock %}

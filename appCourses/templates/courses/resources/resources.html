@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Resources{% endblock %}
+
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Resources</li>
+        </ol>
+    </nav>
+    <br>
+    <br> 
+    <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+        
+        {% if request.user.is_authenticated %} 
+                {% if request.user.is_faculty %}
+                        <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+                {% else %}
+                        <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+                {% endif %}
+        {% endif %}
+        <br><br>
+
+    <div class="container">
+        <div class="col-12 col-sm-6 col-md-10">
+            {% if request.user.is_authenticated %} 
+                    {% for resource in resources %}
+                        <h3><strong> {{ resource.title }}  </strong></h3><br>
+                        <a href="/media/{{resource.file}}"><b style="font-size: 150%;">{{resource.file}}</b></a>
+                        {% if request.user.is_faculty %}
+                            <a style="margin-left: 20px;" class="btn btn-danger"  href="{% url 'courses:delete_resource' id=resource.course_id pk=resource.pk %}">Delete Resource</a>
+                        {% endif %}
+                        <hr/>
+                    {% empty %}
+                        <h4 style="color: red;">No Resources have been added!!</h4>
+                    {% endfor %}
+                    <hr/>
+                    {% if request.user.is_faculty %}
+                        <a class="btn btn-success" href="{% url 'courses:add_resource' course_id %}">Add Resource</a>
+                    {% endif %}
+            {% else %}
+                <h4 style="color:#4682B4">Please Login to Education Easy </h4>
+                <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login</a>    
+            {% endif %}
+            <br/>
+        </div>
+
+    </div>
+
+{% endblock %}
+

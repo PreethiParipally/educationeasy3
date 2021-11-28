@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Assignments{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course.id %}">Course</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'courses:assignments' course.id  %}">Assignments</a></li>
+            <li class="breadcrumb-item active" aria-current="page">View Assignment</li>
+    </ol>
+  </nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+{% endif %}
+<br><br> 
+
+    <div class="container">
+
+        <div class="col-12 col-sm-6 col-md-10">
+            {% if request.user.is_authenticated %} 
+                {% if request.user.is_student %}
+                    <h3><strong> {{ assignment.title }}  </strong></h3>
+                    <hr/>
+                    <p> <h4>Content</h4> {{ assignment.content }} </p>
+                    <br/>
+                    <p> <h4>Marks</h4> {{ assignment.marks }} </p>
+
+                    {% if is_submitted %}
+                          <a class="btn btn-primary" href="{% url 'courses:my_assignment_submission' id1=assignment.course_id id2=assignment.id %}">View My Submitted Assignment</a>
+                          
+                    {% else %}
+                          <a class="btn btn-primary" href="{% url 'courses:add_assignment_submission' id1=assignment.course_id id2=assignment.id  %}">Submit Assignment</a>
+                          
+                    {% endif %}
+                    <hr/>
+                {% endif %}
+            {% else %}
+                <h4 style="color:#4682B4">Please Login to Education Easy </h4>
+                <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login</a>    
+            {% endif %}
+            <br/>
+        </div>
+
+    </div>
+
+{% endblock %}
+

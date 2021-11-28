@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Take Exam{% endblock %}
+
+
+{% block content %}
+<script type="text/javascript">
+    function preventBack() {
+        window.history.forward();
+    }
+     
+    setTimeout("preventBack()", 0);
+     
+    window.onunload = function () { null };
+</script>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course.id %}">Course</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'exams:exams_student' course.id %}">Exams</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Take Exam</li>
+    </ol>
+  </nav>
+  
+  <br>
+  <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+  
+  {% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+  {% endif %}
+  <br><br>
+<div class="container my-4">
+    <div class="jumbotron">
+
+        <div class="row">
+
+            <div class="card border-info mx-4 my-4">
+                <div class="card-body text-default">
+
+                    <h4 class="card-title">Exam Details :</h4>
+                    <p class="card-text">
+                        </p><ul style="list-style:decimal;">
+                            <li>Course : {{course.course_name}}</li>
+                            <li>Exam : {{exam.exam_name}}</li>
+                            <li>Total Question : {{total_questions}}</li>
+                            <li>Total Marks : {{total_marks}}</li>
+                        </ul>
+                    <p></p>
+                    
+                    {% if is_taken %}
+                        <h4 style="color: red;">You have already attemted this Exam!!</h4>
+
+                        
+                        <a class="btn btn-primary btn-xs" style="border-radius: 0%; margin-right:15px;" href="{% url 'exams:view_result' course.id %}">View Results</a>      
+                        </div>  
+                    </div> 
+                    {% else %}
+
+                        <h4 class="card-title">Rules :</h4>
+                        <p class="card-text">
+                            </p><ul style="list-style:decimal;">
+                                <li>All questions are MCQ (multiple choice question with 4 options)</li>
+                                <li><span class="text-danger">Only one choice is correct among the given.</span></li>
+                                <li>Every question carry different marks.</li>
+                                <li>Try to answer ASAP.</li>
+                                <li>Test is auto graded based on the questions attempted correct and time taken!</li>
+                                <li>You will be able to view marks immediately once after you submit the answer.</li>
+                            </ul>
+                        <p></p>
+                        <a href="{% url 'exams:start_exam' id=course.id pk=exam.pk  %}" class="btn btn-success" style="border-radius:0px;">Enter Examination</a>
+                    </div>  
+                    <div class="card-footer">Best Of Luck, Students!</div>  
+                </div>  
+                {% endif %}
+        </div>  
+    </div>
+</div>
+
+<br><br><br><br><br><br>
+{% endblock content %}

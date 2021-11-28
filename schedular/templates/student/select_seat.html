@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %} Book a Slot. {% endblock %}
+
+{% block content %}
+
+
+  <section class="dentist-area section-padding-40-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'schedular:schedules' course_id  %}">Schedule</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'schedular:view_schedule' id=course_id pk=schedule_id %}">View Schedule</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Select Seat</li>
+      </ol>
+    </nav>
+    
+    <br>
+    <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+    
+    {% if request.user.is_authenticated %} 
+          {% if request.user.is_faculty %}
+                  <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+          {% else %}
+                  <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+          {% endif %}
+    {% endif %}
+    <br><br>
+    <div class="container">
+
+      <div class="row justify-content-center">
+
+        <div class="col-lg-5 mb-5 mb-lg-0">
+          <center> <h3>Book a Slot for this Schedule. </h3></center>
+          <br/>
+          <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <label for="" style="font-weight: bold;"> Name:</label>
+            <input type="text" style=" margin-left:136px;" name="name">
+
+            <br><br>
+            <label for="e_date" style="font-weight: bold;">Covid Vaccination level:</label> 
+            &nbsp;&nbsp;<input type="text" class="" id='dose' style="margin-left:10px;" name="dose" placeholder="0 / 1 / 2"> 
+            <!-- <input type="button" class="btn btn-success" id="validate" onclick="validate()" name="validate" value="validate"> -->
+            <p>provide a number which indicates the number of vaccination doses you have taken which is from 0-2</p>
+
+            <br><br>
+            <input type="submit" class="btn btn-success" id='submit' name="submit" value="book">
+        </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
+
+

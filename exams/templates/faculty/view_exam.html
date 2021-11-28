@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %} View Exam {% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'exams:exams' course_id %}">Exams</a></li>
+          <li class="breadcrumb-item active" aria-current="page">View Exam</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+
+<a class="btn btn-outline-secondary" href="{% url 'exams:add_question' id1=course_id id2=exam_id %}"><span class="glyphicon glyphicon-plus"></span> Add Question</a>
+<br><br>
+<div class="container">
+  {% if count %}
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h6 class="panel-title">Available Questions</h6>
+      </div>
+      <table class="table table-hover table-bordered" id="dev-table">
+        <thead>
+          <tr>
+
+            <th>Question</th>
+          
+            <th>Marks</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        {% for c in questions %}
+        <tr>
+
+          <td> {{c.question}}</td>
+          
+          <td>{{c.marks}}</td>
+          <td>
+            <a class="btn btn-danger btn-xs" style="border-radius: 0%; margin-right:15px;" href="{% url 'exams:delete_question' id1=c.course.id id2=c.exam.id pk=c.pk %}"><span class="glyphicon glyphicon-trash"></span></a>
+            <a href="{% url 'exams:update_question' id1=c.course.id id2=c.exam.id pk=c.pk %}">Update</a>
+          </td>
+
+        </tr>
+        {% empty %}
+            <h4 class="bg-light text-center font-italic" style="color: red;">No Questions have been added!!</h4>
+          {% endfor %}
+      </table>
+    </div>
+  {% else %}
+    <h4 class="bg-light text-center font-italic" style="color: red;">No Questions have been added!!</h4>
+  {% endif %}
+</div>
+
+<br><br><br><br><br><br>
+{% endblock content %}
+
+        

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %} Register to Course {% endblock %}
+
+{% block content %}
+
+    <section class="dentist-area section-padding-40-0">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Register to Course</li>
+            </ol>
+          </nav>
+
+        <br>
+        <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+        
+        {% if request.user.is_authenticated %} 
+                {% if request.user.is_faculty %}
+                        <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+                {% else %}
+                        <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+                {% endif %}
+        {% endif %}
+        <br><br> 
+<div class="container">
+
+<div class="row justify-content-center">
+
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <center> <h3> Register to the Course </h3></center>
+                          <br/>
+                    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+                        {{ form|bootstrap }}
+
+                        <div class="row form-group">
+                            <div class="col-md-12" style="text-align: center;">
+                                <input type="submit" value="Register" class="btn btn-primary btn-md text-white">
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

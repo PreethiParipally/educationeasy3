@@ -1,0 +1,154 @@
+{% load static %}
+<!-- Preloader -->
+<!-- Preloader -->
+
+<!-- 04009A
+77ACF1
+3EDBF0
+C0FEFC -->
+
+<style>
+    @media screen and (max-width: 992px){
+        .navmini {
+       color: #04009A !important;
+       /*ADD OTHER PROPERTIES */
+          }
+       } 
+</style>
+
+<div id="preloader">
+    <div class="preload-content">
+        <div id="dento-load"></div>
+    </div>
+</div>
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area">
+    <!-- Top Header Area -->
+    <div class="top-header-area " style="background-color: #77ACF1;">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-6 col-md-3 col-lg-4">
+                    <div class="top-header-social-info text-right">
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i
+                                class="fa fa-facebook text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Twitter"><i
+                                class="fa fa-twitter text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google Plus"><i
+                                class="fa fa-google-plus text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Linkedin"><i
+                                class="fa fa-linkedin text-white"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="bottom" title="Pinterest"><i
+                                class="fa fa-pinterest text-white"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Top Header End -->
+
+    <!-- Main Header Start -->
+    <div class="main-header-area " style="background-color: #04009A;">
+        <div class="classy-nav-container breakpoint-off" >
+            <div class="container">
+                <!-- Classy Menu -->
+                <nav class="classy-navbar justify-content-between" id="dentoNav">
+
+                    <!-- Logo -->
+                    <a class="nav-brand text-white" href="/">Education Easy
+                    </a>
+
+                    <!-- Navbar Toggler -->
+                    <div class="classy-navbar-toggler">
+                        <span class="navbarToggler"><span></span><span></span><span></span></span>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="classy-menu">
+
+                        <!-- Close Button -->
+                        <div class="classycloseIcon">
+                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                        </div>
+                        <!-- Nav Start -->
+                        
+                        <div class="classynav" >
+                            <ul id="nav">
+                                {% if user.is_authenticated %}
+                                    <li>
+                                        <a lass="nav-item nav-link" href="/" style="color:#fff;">
+                                            <span class="glyphicon glyphicon-user navmini">
+                                                    {{ request.user.first_name }}
+                                            </span>
+                                        </a>
+                                        <ul class="dropdown" style="background-color: #77ACF1;">
+                                            {% if user.is_faculty %}
+                                                <li><a class="nav-item nav-link" href="{% url 'accounts:profile' user.username %}" class="btn btn-simple">Profile</a></li>
+                                                <li>
+                                                    <a class="nav-item nav-link" href="{% url 'posts:posts' %}">Posts</a>
+                                                    <ul class="dropdown" style="background-color: #77ACF1;">
+                                                        <li><a class="nav-item nav-link" href="{% url 'posts:create' %}" class="btn btn-simple">New Post</a></li>
+                                                        <li> <a class="nav-item nav-link" href="{% url 'posts:myposts' %}" class="btn btn-simple">My Posts</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'posts:post_favourite_list' %}" class="btn btn-simple">Saved Posts</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'posts:search_posts' %}">Search Posts</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a lass="nav-item nav-link" href="{% url 'courses:courses' %}">Courses</a>
+                                                    <ul class="dropdown" style="background-color: #77ACF1;">
+                                                        <li><a lass="nav-item nav-link" href="{% url 'courses:mycreatedcourses' %}">My Courses</a></li>
+                                                        <li><a lass="nav-item nav-link" href="{% url 'courses:create' %}"> Create Course</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'courses:search_courses' %}">Search Courses</a></li>
+                                                        </ul>
+                                                </li>
+                                                <li><a class="nav-item nav-link" href="{% url 'schedular:my_schedules' %}" class="btn btn-simple">My Schedule</a></li>
+                                                <li><a class="nav-item nav-link" href="{% url 'scheduleCalendar:calendar' %}" class="btn btn-simple">Calendar</a></li>
+                                            {% else %} 
+                                                <li><a class="nav-item nav-link" href="{% url 'accounts:profile' user.username %}" class="btn btn-simple">Profile</a></li>
+                                                <li>
+                                                    <a class="nav-item nav-link" href="{% url 'posts:posts' %}">Posts</a>
+                                                    <ul class="dropdown" style="background-color: #77ACF1;">
+                                                        <li><a lass="nav-item nav-link" href="{% url 'posts:posts' %}">All Posts</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'posts:post_favourite_list' %}" class="btn btn-simple">Saved Posts</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'posts:search_posts' %}">Search Posts</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a lass="nav-item nav-link" href="{% url 'courses:courses' %}">Courses</a>
+                                                    <ul class="dropdown" style="background-color: #77ACF1;">
+                                                        <li><a lass="nav-item nav-link" href="{% url 'courses:courses' %}">All Courses</a></li>
+                                                        <li><a lass="nav-item nav-link" href="{% url 'courses:my_registered_courses' %}">My Courses</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'courses:search_courses' %}">Search Courses</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a class="nav-item nav-link" href="{% url 'schedular:book_history' %}">My Schedule</a>
+                                                    <ul class="dropdown" style="background-color: #77ACF1;">
+                                                        <li><a lass="nav-item nav-link" href="{% url 'schedular:book_history' %}"> Booking History</a></li>
+                                                        <li><a class="nav-item nav-link" href="{% url 'schedular:download' %}"> Download slot Details</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a class="nav-item nav-link" href="{% url 'BookingsCalendar:bookings_calendar' %}" class="btn btn-simple">Calendar</a></li>
+                                             {% endif %}
+                                            
+                                            <li><a class="nav-item nav-link" href="{% url 'accounts:allfaculty' %}" class="btn btn-simple">Faculty</a></li>
+                                            <li><a class="nav-item nav-link" href="{% url 'accounts:allstudents' %}" class="btn btn-simple">Students</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="nav-item nav-link navmini" style="color:#fff;" href="{% url 'accounts:logout' %}" class="btn btn-simple">Log out</a></li>
+                                {% else %}
+                                    <li><a class="nav-item nav-link navmini" style="color:#fff;" href="{% url 'accounts:login' %}" class="btn btn-simple">Log in</a></li>
+                                    <li><a class="nav-item nav-link navmini" style="color:#fff;" href="{% url 'accounts:register' %}" class="btn btn-simple">Sign up</a></li>
+                                {% endif %}
+                            </ul>
+
+                        </div>
+                        <!-- Nav End -->
+                    </div>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+

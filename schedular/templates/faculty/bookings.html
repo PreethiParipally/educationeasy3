@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Bookings{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'schedular:schedules' course_id  %}">Schedule</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'schedular:view_created_schedule' id=course_id pk=schedule_id %}">View Schedule</a></li>
+            <li class="breadcrumb-item active" aria-current="page">View Bookings</li>
+    </ol>
+  </nav>
+  
+  <br>
+  <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+  
+  {% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+  {% endif %}
+  <br><br>
+
+    <div class="container">
+        {% if request.user.is_authenticated and request.user.is_faculty %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h6 class="panel-title">Bookings for this Schedule</h6>
+            </div>
+            <table class="table table-hover table-bordered" id="dev-table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Vaccination Level</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+                        
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.user }}</td>
+                    <td>{{ booking.vaccine_dose }}</td>
+                    <td><a class="btn btn-danger btn-xs" style="border-radius: 0%; margin-right:15px;"  href="{% url 'schedular:cancel_booking' id1=booking.course_id id2=booking.schedule.id pk=booking.pk  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                </tr>
+
+            {% empty %}
+                <h4 style="color: red;">No bookings!!</h4>
+            {% endfor %}
+            </table>
+            </div>
+        {% else %}
+            <h4 style="color:#4682B4">Please Login as Faculty to Education Easy </h4>
+            <a href="{% url 'accounts:login' %}" class="btn btn-primary"><i class="glyphicon glyphicon-user" style="font-weight:bold"></i> Login as Faculty</a>    
+        {% endif %}
+            <br/>
+
+    </div>
+
+{% endblock %}
+

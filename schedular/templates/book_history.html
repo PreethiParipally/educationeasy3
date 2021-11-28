@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% load static %}
+
+{% block title %}  Booking History. {% endblock %}
+
+{% block content %}
+
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+
+    <table class="table table-hover table-bordered" id="dev-table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Faculty</th>
+                <th>Date</th>
+                <th>Timings</th>
+                <th>Seat</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        {% for row in book_history %}
+    
+            <tr>
+                <td>{{row.course.course_name}}</td>
+                <td>{{row.course.user}}</td>
+                <td>{{row.schedule.date}}</td>
+                <td>{{row.schedule.start_time}} - {{row.schedule.end_time}}</td>
+                <td>{{row.seat}}</td>
+                <td><a class="btn btn-danger btn-xs" style="border-radius: 0%; margin-right:15px;"  href="{% url 'schedular:cancel_booking' id1=row.course_id id2=row.schedule.id pk=row.pk  %}"><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+              </tr>
+    
+        {% endfor %}
+    
+    </table>
+
+
+{% endblock %}

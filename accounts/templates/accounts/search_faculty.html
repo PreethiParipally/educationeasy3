@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+<div class="card">
+  <div class="card-header">
+    {% if searched %}
+		  You Searched For {{ searched }}
+	  {% else %}
+		  Search Faculty...
+	  {% endif %}
+  </div>
+  <div class="card-body">
+    <form method=POST action="{% url 'accounts:search_faculty' %}">
+      {% csrf_token %}
+      <input class="form-control me-2" type="search" placeholder="Search Faculty" aria-label="Search" name="searched">
+      <br/>
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+  </div>
+</div>
+<br/>
+<div class="col-md-9">
+  {% if searched and count %}
+    <div class="card">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th><h4 style="font-weight:bold; text-align: center;">Faculty</h4></th>
+            <th><h4 style="font-weight:bold; text-align: center;">Designation</h4></th>
+            <th><h4 style="font-weight:bold; text-align: center;">Number of posts</h4></th>
+            <th><h4 style="font-weight:bold; text-align: center;">Number of Courses</h4></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in faculty %}
+              <tr>
+                {% if user.faculty.image %}
+                <td class="align-middle"><img class="rounded-circle account-img" style="width: 65px;height: 65px; text-align: center;"  src="{{ user.faculty.image.url }}" ><a href=" {% url 'accounts:profile' user.username %} " style="color:#007bff;font-size:19px;margin-left:20px;">: {{ user.username }}</a></td>
+                {% else %}
+                <td class="align-middle"><img class="rounded-circle account-img" style="width: 65px;height: 65px; text-align: center;"  src="{% static 'accounts/img/default_profile.png' %}" ><a href=" {% url 'accounts:profile' user.username %} " style="color:#007bff;font-size:19px;margin-left:20px;">: {{ user.username }}</a></td>
+                {% endif %}
+                <td class="align-middle" style="text-align: center;"><p>{{user.faculty.designation}}</p></td>
+                <td class="align-middle" style="text-align: center;">{{user.posts.count}}</td>
+                <td class="align-middle" style="text-align: center;">{{user.courses.count}}</td>
+              </tr>
+          {% empty %}
+           <h4 class="bg-light text-center font-italic" style="color: red;" colspan="5">No Match Found!!</h4>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+    <br><br>
+</div>
+{% endblock %}

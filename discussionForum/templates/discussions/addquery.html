@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'discussions:myqueries' course_id %}">My Queries</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Add a new query</li>
+    </ol>
+  </nav><br>
+  <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+  
+  {% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+  {% endif %}
+  <br><br> 
+  <h2 class="mb-3">Add a new query</h2>
+  <form method="POST" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="{% url 'discussions:myqueries' course_id %}" class="btn btn-outline-secondary" role="button">Nevermind</a>
+  </form>
+  <br>
+  <br>
+{% endblock %}

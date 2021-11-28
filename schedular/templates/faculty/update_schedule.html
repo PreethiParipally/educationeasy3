@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %} Update Schedule {% endblock %}
+
+{% block content %}
+
+    <section class="dentist-area section-padding-40-0">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'schedular:schedules' course_id  %}">Schedule</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Update Schedule</li>
+            </ol>
+          </nav>
+          
+          <br>
+          <a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+          
+          {% if request.user.is_authenticated %} 
+                {% if request.user.is_faculty %}
+                        <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+                {% else %}
+                        <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+                {% endif %}
+          {% endif %}
+          <br><br>
+<div class="container">
+
+<div class="row justify-content-center">
+
+                <div class="col-lg-5 mb-5 mb-lg-0">
+                    <center> <h3>Update Schedule</h3></center>
+
+                    <form action="" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+                        {{ form|bootstrap }}
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <input type="submit" value="Update" class="btn btn-primary btn-md text-white">
+                                <br><br>
+                                <a class="btn btn-danger" href="{% url 'schedular:delete_schedule' id=schedule.course_id pk=schedule.pk %}">Delete schedule</a>
+                        
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

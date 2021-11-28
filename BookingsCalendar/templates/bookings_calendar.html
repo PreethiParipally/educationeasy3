@@ -1,0 +1,86 @@
+{% extends 'base1.html' %}
+
+{% block content %}
+
+<style>
+
+
+	.calendar {
+		width: 100%;
+		margin: auto;
+		font-size: 13px;
+		border-collapse: collapse;
+		border-spacing: 0;
+		line-height:20px;
+	}
+	#date-time{
+		padding-right:5px;
+		border-right:2px solid black;
+	}
+	.calendar tr, .calendar td {
+		border: 1px solid #888; 
+	}
+	.calendar th {
+		padding: 10px;
+		text-align: center;
+		font-size: 18px;
+	}
+
+	.month {
+		font-size: 25px;
+	}
+	.date {
+		font-size: 16px;
+		padding-bottom:5px;
+	}
+
+	.clearfix {
+		margin: 15px;
+	}
+	.event-link{
+		display:inline-block; 
+		overflow:hidden;
+		border: solid 0.5px #bbb;
+		border-radius: 5px;
+		margin-left: 5px;
+		width:80px;
+		height:auto;
+	}
+	.event-link:hover{
+		background:#bfbfbf;
+		text-decoration:none;
+	}
+	.calendar tr td{
+		padding: 50px 0px 50px 0px;
+
+	}
+</style>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br> 
+	
+<div class="clearfix">
+	<a class="btn btn-dark" style="position:absolute; left:20px;" href="{% url 'BookingsCalendar:bookings_calendar' %}?{{ prev_month }}"> Previous Month </a>
+	<a class="btn btn-dark" style="position:absolute; right:20px;" href="{% url 'BookingsCalendar:bookings_calendar' %}?{{ next_month }}"> Next Month </a>
+	</div>
+<div style="text-align: center;">
+	{{ calendar }}
+</div>
+
+
+	
+{% endblock %}

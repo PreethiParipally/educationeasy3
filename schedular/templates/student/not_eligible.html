@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% load static %}
+
+{% block title %} Clashing slots. {% endblock %}
+
+{% block content %}
+<style>
+    *{
+        margin: 0px;
+        padding: 0px;
+    }
+    .card{
+        width: 30%;
+        /* display: inline-block; */
+        box-shadow: 2px 2px 20px black;
+        border-radius: 5px; 
+        margin: 2%;
+        background-color: gainsboro;
+        /* border-right: 3px dotted;
+        margin-right: 50px; */
+    }
+
+
+</style>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Not Eligible</li>
+  </ol>
+</nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+      {% if request.user.is_faculty %}
+              <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+      {% else %}
+              <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+      {% endif %}
+{% endif %}
+<br><br>
+
+<div style="color: red;">
+  <h2 style="padding: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">You have not at eligible vaccination level to book this schedule. Complete the eligible vaccination to book this slot!
+  </h2>
+</div>
+<div class="card ">
+  <div class="des">
+    <div style="margin-left: 30px; margin-bottom:10px" >
+      <h3>Eligible Vaccination level :{{eligible_vaccination}}</h3>
+      <h3>Your Vaccination level :{{Your_vaccination_level}}</h3>
+      
+    </div>
+  </div>              
+</div>
+<a class="btn btn-primary" href="/">Go to Home Page</a>
+
+{% endblock %}

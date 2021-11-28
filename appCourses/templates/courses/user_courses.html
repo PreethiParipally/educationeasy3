@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+<a class="btn btn-outline-primary" href="{% url 'courses:create' %}">Add Course</a>   
+
+
+    <div class="container">
+      <div class="row">
+        <!-- Section Heading -->
+        <div class="col-12">
+          <div class="section-heading text-center">
+            <h3 style="color: blue;font-size:200%;">Your Courses</h3>
+            <div class="line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        {% if request.user.is_faculty %}
+          {% for course in request.user.courses.all %}
+            <!-- Single Dentist Area -->
+            <div class="col-12 col-sm-6 col-md-4">
+              <div class="single-dentist-area mb-100">
+                <img  style="height: 300px; width: auto " src="{{ course.course_image.url }}" alt="">
+                <div class="dentist-content">
+                  <div class="dentist-info bg-gradient-overlay">
+                      <h5>{{ course.course_name }} |  <a href="{% url 'courses:course-view' course.pk %}"> <small>VIEW COURSE</small></a> </h5>
+                    <p>{{ course.user }} </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <h4>You haven't started any Courses yet.</h4>
+          {% endfor %}
+        </div>
+      </div>
+              
+            <div class="pagination" style="display: block;">
+              <span class="step-links">
+                  {% if page_obj.has_previous %}
+                  <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                  {% endif %}
+          
+                  {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                      <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                  {% endfor %}
+          
+                  {% if page_obj.has_next %}
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                  {% endif %}
+              </span>
+            </div>
+        {% else %}
+          {% for reg_course in request.user.userregister.all %}
+            <div class="col-12 col-sm-6 col-md-4">
+              <div class="single-dentist-area mb-100">
+                <img  style="height: 300px; width: auto " src="{{ reg_course.course.course_image.url }}" alt="">
+                <div class="dentist-content">
+                  <div class="dentist-info bg-gradient-overlay">
+                      <h5>{{ reg_course.course.course_name }} |  <a href="{% url 'courses:course-view' reg_course.course.pk %}"> <small>VIEW COURSE</small></a> </h5>
+                    <p>{{ reg_course.course.user }} </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <h4>You haven't Registered to any Courses yet.</h4>
+          {% endfor %}
+        </div>
+      </div>
+              
+            <div class="pagination" style="display: block;">
+              <span class="step-links">
+                  {% if page_obj.has_previous %}
+                  <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                  {% endif %}
+          
+                  {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                      <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                      <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                  {% endfor %}
+          
+                  {% if page_obj.has_next %}
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                  <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                  {% endif %}
+              </span>
+            </div>
+        {% endif %}
+      
+</div>
+{% endblock %} 

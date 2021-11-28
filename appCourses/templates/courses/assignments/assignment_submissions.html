@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Assignment Submissions{% endblock %}
+
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'courses:assignments' course_id  %}">Assignments</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Assignment Submissions</li>
+    </ol>
+  </nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+{% endif %}
+<br><br> 
+
+    <div class="container">
+
+        <div class="col-12 col-sm-6 col-md-10">
+                    <strong><h3>Assignment Submissions</h3></strong>
+        <hr/>
+            {% for assignment_submission in assignment_submissions %}
+            
+                <p> <h4>Name</h4> {{ assignment_submission.name }} </p>
+
+                <p> <h4>Id</h4> {{ assignment_submission.university_id }} </p>
+                <hr/>
+                <p> <h4>Answer</h4> {{ assignment_submission.content }}  </p>
+
+                <br/>
+                <p><h4>Assignment Submission</h4>  <a class="btn btn-success" href="/media/{{assignment_submission.file}}">{{assignment_submission.file}} </a></p>
+                <hr/>
+
+                {% if request.user.is_student %}
+
+                  <a class="btn btn-warning" href="{% url 'courses:update_assignment_submission' id1=assignment_submission.course_id id2=assignment_submission.assignment.id pk=assignment_submission.pk %}">Update Assignment Submission</a>
+                  <a class="btn btn-danger" href="{% url 'courses:delete_assignment_submission' id1=assignment_submission.course_id id2=assignment_submission.assignment.id pk=assignment_submission.pk %}">Delete Assignment Submission</a>
+
+                {% endif %}
+                <hr><hr>
+
+            {% empty %}
+                <h4 style="color: red;">No Assignment Submissions!!</h4>
+            {% endfor %}
+            <br/>
+
+            <br/>
+        </div>
+    </div>
+{% endblock %}

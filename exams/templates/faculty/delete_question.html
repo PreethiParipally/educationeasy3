@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Question Delete{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'courses:course-view' course_id %}">Course</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'exams:exams' course_id %}">Exams</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'exams:view_exam' id1=course_id id2=exam_id %}">View Exam</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Delete Question</li>
+    </ol>
+  </nav>
+
+<br>
+<a class="btn btn-primary" href="{% url 'courses:courses' %}">All Courses</a>   
+
+{% if request.user.is_authenticated %} 
+        {% if request.user.is_faculty %}
+                <a class="btn btn-primary" href="{% url 'courses:mycreatedcourses' %}">My Courses</a>
+        {% else %}
+                <a class="btn btn-primary" href="{% url 'courses:my_registered_courses' %}">My Courses</a>
+        {% endif %}
+{% endif %}
+<br><br> 
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-5 mb-5 mb-lg-0">
+                <center>
+                    <h4 class="highlight">Are you sure you want to delete this Question?</h4>
+
+                </center>
+                <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                     </br>
+                    </br>
+                    <div style="text-align: center;"><input class="btn btn-danger" type="submit" value="Delete">
+                    </div>
+
+
+                </form>
+                </br>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
