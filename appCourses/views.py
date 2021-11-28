@@ -386,7 +386,7 @@ class viewMyAssignmentSubmission(ListView):
 @method_decorator([login_required, student_required], name='dispatch')
 class AddAssignmentSubmissionView(CreateView):
   model = AssignmentSubmission
-  fields = ('name', 'university_id', 'content', 'file')
+  fields = ( 'content', 'file')
   template_name = '../templates/courses/assignments/student/add_assignment_submission.html'
   context_object_name = 'assignment_submission'
   extra_context = {
@@ -413,7 +413,7 @@ class AddAssignmentSubmissionView(CreateView):
 @method_decorator([login_required, student_required], name='dispatch')
 class UpdateAssignmentSubmission(UpdateView):
   model = AssignmentSubmission
-  fields = ('name', 'university_id', 'content', 'file')
+  fields = ( 'content', 'file')
   template_name = '../templates/courses/assignments/student/update_assignment_submission.html'
   context_object_name = 'assignment_submission'
   extra_context = {

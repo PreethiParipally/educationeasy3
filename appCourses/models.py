@@ -49,14 +49,12 @@ class AssignmentSubmission(models.Model):
     user = models.ForeignKey(User, related_name='user_assignment_submissions', on_delete=models.CASCADE)
     course= models.ForeignKey(Course, on_delete=models.CASCADE,related_name='course_assignment_submission')
     assignment= models.ForeignKey(Assignment, on_delete=models.CASCADE,related_name='assignment_submission')
-    name = models.CharField(max_length=100)
-    university_id = models.CharField(max_length=100)
     content = models.TextField(null=True, blank=True)
     file = models.FileField(null=True, blank=True)
     date_submitted = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
-        return self.assignment.__str__()+" "+  self.name
+        return self.assignment.__str__()+" "+  self.user.username
 
     class Meta:
         ordering = ['-date_submitted']
@@ -68,7 +66,7 @@ class RegisterCourse(models.Model):
     def __str__(self):
         return "{}_{}".format(self.user.__str__(), self.course.__str__())
     def __unicode__(self):
-        return "".join(self.course.__str__(), " by ", self.user)
+        return "".join(self.course.course_name, " by ", self.user.username)
 
 
 
