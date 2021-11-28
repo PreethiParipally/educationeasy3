@@ -107,7 +107,7 @@ class AddSchedule(CreateView):
         clash_array.append(schedule)
         flag=True
     if(flag):
-      self.dict={'schedules':clash_array}
+      self.dict={'schedules':clash_array,'course_id':self.kwargs['id']}
       messages.success(self.request, 'Your clashes with this schedule. Delete the following schedules to add this schedule!')
       return render(self.request, "../templates/faculty/clash_schedule.html", self.dict)
     return super().form_valid(form)
@@ -293,10 +293,9 @@ class BookSeat(View):
             c_id =  request.session['course_id']  
             
            ############Saving booked seats data################
-            if(booked_seat):
-              obj = models.UserBook(user=request.user,schedule_id=s_id,course_id=c_id,name=name,vaccine_dose=dose,seat=booked_seat)
-              obj.save()
-              return redirect('schedular:schedules',id=c_id)
+            obj = models.UserBook(user=request.user,schedule_id=s_id,course_id=c_id,name=name,vaccine_dose=dose,seat=booked_seat)
+            obj.save()
+            return redirect('schedular:schedules',id=c_id)
         return render(request, self.template_name, self.dict)
 
 

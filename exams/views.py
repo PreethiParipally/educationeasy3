@@ -327,6 +327,8 @@ def check_marks_view(request,id,pk):
   course=Course.objects.get(id=id)
   exam=Exam.objects.get(id=pk)
   user = User.objects.get(id=request.user.id)
-  results= Result.objects.all().filter(course=course).filter(exam=exam).get(user=user)
   count = Result.objects.all().filter(course=course).filter(exam=exam).filter(user=user).count()
+  results = None
+  if(count):
+    results= Result.objects.all().filter(course=course).filter(exam=exam).get(user=user)
   return render(request,'../templates/student/check_marks.html',{'results':results,'count':count,'course':course,'exam':exam})

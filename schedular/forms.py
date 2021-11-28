@@ -4,29 +4,6 @@ from . import models
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
-class CreateUserForm(UserCreationForm):
-
-    password1 = forms.CharField(
-        label = "Password",
-        widget=forms.PasswordInput(attrs={'class':'form-control'})
-    )
-
-    password2 = forms.CharField(
-    label = "Confirm Password",
-    widget=forms.PasswordInput(attrs={'class':'form-control'})
-    )
-
-    class Meta:
-        model = User
-        fields = ['username', 'email',]
-
-        widgets = {
-            'username': forms.TextInput(attrs={'class':'form-control'}),
-            'email':forms.EmailInput(attrs={'class':'form-control'}),
-            # 'password1':forms.PasswordInput(attrs={'class':'form-control'}),
-            # 'password2': forms.PasswordInput(attrs={'class':'form-control'}),
-        }
-
 
 class BookedSeatForm(forms.Form):
     booked_seats = forms.IntegerField()
@@ -37,5 +14,22 @@ class CheckEligibilityForm(forms.Form):
     vaccine_dose = forms.IntegerField()
     # vaccine_certificate = forms.FileField()
     name = forms.CharField()
+    def __init__(self, *args, **kwargs):
+        super(CheckEligibilityForm, self).__init__(*args, **kwargs)
+        self.fields['vaccine_dose'].label = "vaccine dose level taken"
+
+        self.fields['vaccine_dose'].widget.attrs.update(
+            {
+                'placeholder': '0 / 1 / 2',
+            }
+        )
+    class Meta:
+        model=models.UserBook
+        error_messages = {
+                'vaccine_dose': {
+                    'validators': 'Provide appropriate number',
+                }
+            }
+
 
     
