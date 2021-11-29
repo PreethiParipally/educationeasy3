@@ -4,6 +4,34 @@ A Portal to provide online interaction between faculty and students.
 
 This is a project under Microsoft Engage mentorship program '21 by Preethi Paripally
 
+# Problem Statement:
+Build a functional prototype of a platform that gives students an array of digital academic and social tools to stay engaged with their studies, peers, and broader university community during pandemic.
+
+# HOW TO RUN THIS PROJECT
+
+Install Python(3.7.6) (Dont Forget to Tick Add to Path while installing Python)
+Open Terminal and Execute Following Commands :
+
+python -m pip install -r requirements. txt
+
+Download This Project Zip Folder and Extract it /clone the project
+Move to project folder in Terminal. Then run following Commands :
+
+py manage.py makemigrations
+py manage.py migrate
+py manage.py runserver
+
+Now enter following URL in Your Browser Installed On Your Pc
+
+http://127.0.0.1:8000/
+
+
+# Website url:
+https://educationeasy.herokuapp.com/
+
+I have hosted this web application in Heroku but the uploaded pdf files can’t be opened since I have used Cloudinary free cloud service for media storage and it has a restriction of opening files others than images. However, the github repository has the all functional features including opening files. The website at above url works completely fine except the opening of files.
+
+
 # FEATURES 
 
 1.  Home Page
@@ -183,26 +211,4 @@ This is a project under Microsoft Engage mentorship program '21 by Preethi Parip
 ![Screenshot (1015)](https://user-images.githubusercontent.com/77268350/143840076-5c66ab42-4519-4d10-aaa9-a2d62b046ca5.png)
 
 
-# HOW TO RUN THIS PROJECT
 
-Install Python(3.7.6) (Dont Forget to Tick Add to Path while installing Python)
-Open Terminal and Execute Following Commands :
-
-python -m pip install -r requirements. txt
-
-Download This Project Zip Folder and Extract it /clone the project
-Move to project folder in Terminal. Then run following Commands :
-
-py manage.py makemigrations
-py manage.py migrate
-py manage.py runserver
-
-Now enter following URL in Your Browser Installed On Your Pc
-
-http://127.0.0.1:8000/
-
-
-# Website url:
-https://educationeasy.herokuapp.com/
-
-I have hosted this web application in Heroku but the uploaded pdf files can’t be opened since I have used Cloudinary free cloud service for media storage and it has a restriction of opening files others than images. However, the github repository has the all functional features including opening files. The website at above url works completely fine except the opening of files.
