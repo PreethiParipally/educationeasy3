@@ -1,5 +1,6 @@
 # education_easy2
-A Portal to provide online interaction between faculty and students 
+A Portal to provide online interaction between faculty and students.
+
 This is a project under Microsoft Engage mentorship program '21 by Preethi Paripally
 
 # FEATURES 
