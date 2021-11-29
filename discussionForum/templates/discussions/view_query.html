@@ -61,7 +61,7 @@
                 </button>
                 <div class="collapse" id="replyBox{{answer.sno}}">
                     <div class="card card-body my-2">
-                        <form action="{% url 'discussions:queryAnswer' id=answer.course.id pk=answer.pk  %}" method="post">
+                        <form action="{% url 'discussions:queryAnswer' id=answer.course.id pk=answer.query.pk  %}" method="post">
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="answer"> reply </label>
